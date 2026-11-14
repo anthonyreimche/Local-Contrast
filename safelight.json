@@ -1,0 +1,13 @@
+{
+  "id": "local-contrast",
+  "name": "Local Contrast",
+  "version": "1.0.0",
+  "description": "Local contrast and tonal compression on L*: a local laplacian filter with detail, highlights, shadows and midtone range, or a faster bilateral grid with coarseness and contrast. Clarity and HDR local tone mapping presets.",
+  "author": "Anthony Reimche",
+  "main": "dist/index.js",
+  "license": "GPL-3.0-or-later",
+  "categories": ["Develop"],
+  "keywords": ["local contrast", "clarity", "detail", "local laplacian", "bilateral", "tone mapping", "hdr"],
+  "repository": "anthonyreimche/Local-Contrast",
+  "minAppVersion": "3.2.3"
+}
