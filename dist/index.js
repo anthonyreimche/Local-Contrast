@@ -206,7 +206,11 @@ var A = "Local Contrast", j = {
 	bilateral: ["coarseness", "contrast"]
 };
 function N() {
-	let { Slider: r } = k.components, { Select: i, SegmentedControl: a, Stack: o, Toggle: s } = k.ui, c = k.develop.useParamScope(), l = w(c.getParams()), u = (e, t) => c.setParams(re(e, t)), d = (n) => {
+	let { Slider: r } = k.components, { Select: i, SegmentedControl: a, Stack: o, Toggle: s } = k.ui, c = k.develop.useParamScope(), l = w(c.getParams()), u = (e, t) => c.setParams(re(e, t)), d = (e, t) => u({
+		...w(c.getParams()),
+		...e,
+		on: !0
+	}, ["on", t]), f = (n) => {
 		let i = t[n];
 		return /* @__PURE__ */ O.createElement(r, {
 			key: n,
@@ -217,11 +221,7 @@ function N() {
 			step: j[n].step,
 			defaultValue: M(n, e[n]),
 			onChange: (e) => {
-				let t = Math.min(Math.max(oe(n, e), i.min), i.max);
-				u({
-					...w(c.getParams()),
-					[n]: t
-				}, [n]);
+				d({ [n]: Math.min(Math.max(oe(n, e), i.min), i.max) }, n);
 			},
 			onCommit: () => c.commit(`${A}: ${x[n].toLowerCase()}`)
 		});
@@ -243,13 +243,9 @@ function N() {
 		value: l.mode,
 		options: se,
 		onChange: (e) => {
-			let t = e === "bilateral" ? "bilateral" : "laplacian";
-			u({
-				...w(c.getParams()),
-				mode: t
-			}, ["mode"]), c.commit(`${A}: ${x.mode.toLowerCase()}`);
+			d({ mode: e === "bilateral" ? "bilateral" : "laplacian" }, "mode"), c.commit(`${A}: ${x.mode.toLowerCase()}`);
 		}
-	}), d("detail"), ce[l.mode].map(d), /* @__PURE__ */ O.createElement(i, {
+	}), f("detail"), ce[l.mode].map(f), /* @__PURE__ */ O.createElement(i, {
 		value: "",
 		placeholder: "Presets",
 		ariaLabel: `${A} presets`,

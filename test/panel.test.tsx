@@ -79,6 +79,21 @@ describe("the panel", () => {
     expect(rig.commits).toEqual(["Local Contrast: highlights"]);
   });
 
+  it("switches on when a slider moves while off, as darktable does", () => {
+    const { rig, slider } = setup();
+    act(() => slider("Detail").onChange(300));
+    expect(rig.params()[qualified("on")]).toBe(true);
+    expect(rig.params()[qualified("detail")]).toBe(2);
+    expect(rig.params()[qualified("llDraws")]).toBe(LL_DRAWS);
+  });
+
+  it("switches on when the mode changes while off", () => {
+    const { rig, button } = setup();
+    act(() => void fireEvent.click(button("Bilateral grid")));
+    expect(rig.params()[qualified("on")]).toBe(true);
+    expect(rig.params()[qualified("blDraws")]).toBe(bilateralDraws(50, 20));
+  });
+
   it("switches to the bilateral grid's sliders and its draws, keeping the other mode's values", () => {
     const { rig, labels, button, slider } = setup({ [qualified("on")]: true, [qualified("highlights")]: 1.2 });
     act(() => void fireEvent.click(button("Bilateral grid")));

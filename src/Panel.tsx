@@ -7,7 +7,8 @@
 // mask's in the Masking panel. A drag writes the value and the draw counts
 // live and commits on release, so one gesture is one undo step; the switch,
 // the mode and a preset commit at once. Each change reads the bag the scope
-// holds now, as drags outrun renders.
+// holds now, as drags outrun renders. Moving a slider or the mode switches the
+// module on, as darktable does when a module's parameter changes.
 
 import { DEFAULT_PARAMS, PRESETS, RANGES, type Mode, type NumericKey, type Params } from "./model";
 import { EDIT_KEYS, LABELS, editPatch, readParams, type EditKey } from "./params";
@@ -51,6 +52,8 @@ export function LocalContrastPanel() {
   const p = readParams(scope.getParams());
 
   const write = (next: Params, keys: readonly EditKey[]) => scope.setParams(editPatch(next, keys));
+  const change = (patch: Partial<Params>, key: EditKey) =>
+    write({ ...readParams(scope.getParams()), ...patch, on: true }, ["on", key]);
 
   const slider = (key: NumericKey) => {
     const range = RANGES[key];
@@ -64,8 +67,7 @@ export function LocalContrastPanel() {
         step={DISPLAY[key].step}
         defaultValue={shown(key, DEFAULT_PARAMS[key])}
         onChange={(v) => {
-          const value = Math.min(Math.max(stored(key, v), range.min), range.max);
-          write({ ...readParams(scope.getParams()), [key]: value }, [key]);
+          change({ [key]: Math.min(Math.max(stored(key, v), range.min), range.max) }, key);
         }}
         onCommit={() => scope.commit(`${TITLE}: ${LABELS[key].toLowerCase()}`)}
       />
@@ -88,7 +90,7 @@ export function LocalContrastPanel() {
         options={MODES}
         onChange={(v) => {
           const mode: Mode = v === "bilateral" ? "bilateral" : "laplacian";
-          write({ ...readParams(scope.getParams()), mode }, ["mode"]);
+          change({ mode }, "mode");
           scope.commit(`${TITLE}: ${LABELS.mode.toLowerCase()}`);
         }}
       />

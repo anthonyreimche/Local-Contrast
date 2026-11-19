@@ -11,6 +11,7 @@ and the older, faster **bilateral grid**.
 
 - **Enabled**: the module's switch. Off by default: darktable's defaults
   already change the photo (detail 125 %, highlights and shadows 50 %).
+  Moving a slider or picking a filter switches it on, as in darktable.
 - **Local laplacian** / **Bilateral grid**: the filter. Each keeps its own
   sliders, so switching back and forth restores them.
 - **Detail** (0 % to 500 %, default 125 %): 100 % leaves the photo alone,
