@@ -95,14 +95,14 @@ var _ = "local-contrast", v = `${_}.lightness`, y = [
 	"midtone",
 	"coarseness",
 	"contrast"
-], ee = [
+], b = [
 	"detail",
 	"highlights",
 	"shadows",
 	"midtone",
 	"coarseness",
 	"contrast"
-], b = ["llDraws", "blDraws"], x = {
+], x = ["llDraws", "blDraws"], S = {
 	on: "Enabled",
 	mode: "Mode",
 	detail: "Detail",
@@ -111,56 +111,56 @@ var _ = "local-contrast", v = `${_}.lightness`, y = [
 	midtone: "Midtone range",
 	coarseness: "Coarseness",
 	contrast: "Contrast"
-}, S = (e) => `${v}.${e}`, C = (e) => typeof e == "number" && Number.isFinite(e), te = (e) => +(e === "laplacian");
-function w(n) {
-	let r = { ...e }, i = n[S("on")];
-	typeof i == "boolean" ? r.on = i : C(i) && (r.on = i >= .5);
-	let a = n[S("mode")];
-	C(a) && (r.mode = a >= .5 ? "laplacian" : "bilateral");
-	for (let e of ee) {
-		let i = n[S(e)];
-		C(i) && (r[e] = Math.min(Math.max(i, t[e].min), t[e].max));
+}, C = (e) => `${v}.${e}`, w = (e) => typeof e == "number" && Number.isFinite(e), ee = (e) => +(e === "laplacian");
+function T(n) {
+	let r = { ...e }, i = n[C("on")];
+	typeof i == "boolean" ? r.on = i : w(i) && (r.on = i >= .5);
+	let a = n[C("mode")];
+	w(a) && (r.mode = a >= .5 ? "laplacian" : "bilateral");
+	for (let e of b) {
+		let i = n[C(e)];
+		w(i) && (r[e] = Math.min(Math.max(i, t[e].min), t[e].max));
 	}
 	return r;
 }
-function T(e, t) {
-	return t === "on" ? e.on : t === "mode" ? te(e.mode) : e[t];
-}
-function E(e) {
-	let t = g(e);
-	return {
-		[S("llDraws")]: t.llDraws,
-		[S("blDraws")]: t.blDraws
-	};
-}
-function ne(e) {
-	let t = {};
-	for (let n of y) t[S(n)] = T(e, n);
-	return {
-		...t,
-		...E(e)
-	};
-}
-function re(e, t) {
-	let n = {};
-	for (let r of t) n[S(r)] = T(e, r);
-	return {
-		...n,
-		...E(e)
-	};
+function E(e, t) {
+	return t === "on" ? e.on : t === "mode" ? ee(e.mode) : e[t];
 }
 function D(e) {
-	if (![...y, ...b].some((t) => S(t) in e)) return null;
-	let t = E(w(e));
-	return b.every((n) => e[S(n)] === t[S(n)]) ? null : t;
+	let t = g(e);
+	return {
+		[C("llDraws")]: t.llDraws,
+		[C("blDraws")]: t.blDraws
+	};
 }
-var ie = () => ne(e), O, k;
-function ae(e) {
-	k = e, O = e.react;
+function te(e) {
+	let t = {};
+	for (let n of y) t[C(n)] = E(e, n);
+	return {
+		...t,
+		...D(e)
+	};
+}
+function ne(e, t) {
+	let n = {};
+	for (let r of t) n[C(r)] = E(e, r);
+	return {
+		...n,
+		...D(e)
+	};
+}
+function O(e) {
+	if (![...y, ...x].some((t) => C(t) in e)) return null;
+	let t = D(T(e));
+	return x.every((n) => e[C(n)] === t[C(n)]) ? null : t;
+}
+var re = () => te(e), k, A;
+function ie(e) {
+	A = e, k = e.react;
 }
 //#endregion
 //#region src/Panel.tsx
-var A = "Local Contrast", j = {
+var j = "Local Contrast", M = {
 	detail: {
 		factor: 100,
 		offset: 100,
@@ -191,13 +191,13 @@ var A = "Local Contrast", j = {
 		offset: 0,
 		step: 1
 	}
-}, M = (e, t) => t * j[e].factor + j[e].offset, oe = (e, t) => (t - j[e].offset) / j[e].factor, se = [{
+}, N = (e, t) => t * M[e].factor + M[e].offset, ae = (e, t) => (t - M[e].offset) / M[e].factor, oe = [{
 	value: "laplacian",
 	label: "Local laplacian"
 }, {
 	value: "bilateral",
 	label: "Bilateral grid"
-}], ce = {
+}], se = {
 	laplacian: [
 		"highlights",
 		"shadows",
@@ -205,50 +205,50 @@ var A = "Local Contrast", j = {
 	],
 	bilateral: ["coarseness", "contrast"]
 };
-function N() {
-	let { Slider: r } = k.components, { Select: i, SegmentedControl: a, Stack: o, Toggle: s } = k.ui, c = k.develop.useParamScope(), l = w(c.getParams()), u = (e, t) => c.setParams(re(e, t)), d = (e, t) => u({
-		...w(c.getParams()),
+function P() {
+	let { Slider: r } = A.components, { Select: i, SegmentedControl: a, Stack: o, Toggle: s } = A.ui, c = A.develop.useParamScope(), l = T(c.getParams()), u = (e, t) => c.setParams(ne(e, t)), d = (e, t) => u({
+		...T(c.getParams()),
 		...e,
 		on: !0
 	}, ["on", t]), f = (n) => {
 		let i = t[n];
-		return /* @__PURE__ */ O.createElement(r, {
+		return /* @__PURE__ */ k.createElement(r, {
 			key: n,
-			label: x[n],
-			value: M(n, l[n]),
-			min: M(n, i.min),
-			max: M(n, i.max),
-			step: j[n].step,
-			defaultValue: M(n, e[n]),
+			label: S[n],
+			value: N(n, l[n]),
+			min: N(n, i.min),
+			max: N(n, i.max),
+			step: M[n].step,
+			defaultValue: N(n, e[n]),
 			onChange: (e) => {
-				d({ [n]: Math.min(Math.max(oe(n, e), i.min), i.max) }, n);
+				d({ [n]: Math.min(Math.max(ae(n, e), i.min), i.max) }, n);
 			},
-			onCommit: () => c.commit(`${A}: ${x[n].toLowerCase()}`)
+			onCommit: () => c.commit(`${j}: ${S[n].toLowerCase()}`)
 		});
 	};
-	return /* @__PURE__ */ O.createElement(o, {
+	return /* @__PURE__ */ k.createElement(o, {
 		gap: 6,
 		style: { padding: 8 }
-	}, /* @__PURE__ */ O.createElement(s, {
+	}, /* @__PURE__ */ k.createElement(s, {
 		checked: l.on,
-		label: x.on,
+		label: S.on,
 		onChange: (e) => {
 			u({
-				...w(c.getParams()),
+				...T(c.getParams()),
 				on: e
-			}, ["on"]), c.commit(`${A}: ${e ? "on" : "off"}`);
+			}, ["on"]), c.commit(`${j}: ${e ? "on" : "off"}`);
 		}
-	}), /* @__PURE__ */ O.createElement(a, {
+	}), /* @__PURE__ */ k.createElement(a, {
 		size: "sm",
 		value: l.mode,
-		options: se,
+		options: oe,
 		onChange: (e) => {
-			d({ mode: e === "bilateral" ? "bilateral" : "laplacian" }, "mode"), c.commit(`${A}: ${x.mode.toLowerCase()}`);
+			d({ mode: e === "bilateral" ? "bilateral" : "laplacian" }, "mode"), c.commit(`${j}: ${S.mode.toLowerCase()}`);
 		}
-	}), f("detail"), ce[l.mode].map(f), /* @__PURE__ */ O.createElement(i, {
+	}), f("detail"), se[l.mode].map(f), /* @__PURE__ */ k.createElement(i, {
 		value: "",
 		placeholder: "Presets",
-		ariaLabel: `${A} presets`,
+		ariaLabel: `${j} presets`,
 		options: n.map((e) => ({
 			value: e.id,
 			label: e.label
@@ -257,17 +257,17 @@ function N() {
 			let t = n.find((t) => t.id === e);
 			if (!t) return;
 			let r = {
-				...w(c.getParams()),
+				...T(c.getParams()),
 				...t.params,
 				on: !0
 			};
-			u(r, y.filter((e) => e === "on" || e in t.params)), c.commit(`${A}: ${t.label}`);
+			u(r, y.filter((e) => e === "on" || e in t.params)), c.commit(`${j}: ${t.label}`);
 		}
 	}));
 }
 //#endregion
 //#region src/glsl.ts
-function le(e) {
+function ce(e) {
 	let t = e.toPrecision(10);
 	if (/e/i.test(t)) {
 		let [e, n] = t.split(/e/i);
@@ -275,7 +275,7 @@ function le(e) {
 	}
 	return t.includes(".") ? t.replace(/0+$/, "").replace(/\.$/, ".0") : `${t}.0`;
 }
-var P = le, F = 2 ** -10, I = [
+var F = ce, I = 2 ** -10, L = [
 	[
 		.4360747,
 		.3850649,
@@ -292,7 +292,7 @@ var P = le, F = 2 ** -10, I = [
 		.7141733
 	]
 ];
-function ue(e) {
+function le(e) {
 	let [t, n, r] = e, i = t[0] * (n[1] * r[2] - n[2] * r[1]) - t[1] * (n[0] * r[2] - n[2] * r[0]) + t[2] * (n[0] * r[1] - n[1] * r[0]);
 	return [
 		[
@@ -312,7 +312,7 @@ function ue(e) {
 		]
 	];
 }
-var L = (e) => `mat3(${[
+var R = (e) => `mat3(${[
 	0,
 	1,
 	2
@@ -320,32 +320,32 @@ var L = (e) => `mat3(${[
 	0,
 	1,
 	2
-].map((n) => P(e[n][t]))).join(", ")})`, R = 24389 / 27, de = 216 / 24389, z = .9642, B = .8249, V = `
+].map((n) => F(e[n][t]))).join(", ")})`, z = 24389 / 27, ue = 216 / 24389, B = .9642, V = .8249, H = `
 float lcCbrt(float v) {
   float r = exp2(log2(v) / 3.0);
   return r - (r * r * r - v) / (3.0 * r * r);
 }
 float lcLabF(float t) {
-  return t > ${P(de)} ? lcCbrt(t) : (${P(R)} * t + 16.0) / 116.0;
+  return t > ${F(ue)} ? lcCbrt(t) : (${F(z)} * t + 16.0) / 116.0;
 }
 float lcLightness(vec3 rgb) {
-  return 116.0 * lcLabF(dot(vec3(${I[1].map(P).join(", ")}), rgb)) - 16.0;
+  return 116.0 * lcLabF(dot(vec3(${L[1].map(F).join(", ")}), rgb)) - 16.0;
 }
-`, fe = `${V}
+`, de = `${H}
 float lcLabFInv(float f) {
-  return f > ${P(6 / 29)} ? f * f * f : (116.0 * f - 16.0) / ${P(R)};
+  return f > ${F(6 / 29)} ? f * f * f : (116.0 * f - 16.0) / ${F(z)};
 }
 vec3 lcShiftLightness(vec3 rgb, vec3 result, bool floorAtZero) {
-  vec3 xyz = ${L(I)} * rgb / vec3(${P(z)}, 1.0, ${P(B)});
+  vec3 xyz = ${R(L)} * rgb / vec3(${F(B)}, 1.0, ${F(V)});
   vec3 f = vec3(lcLabF(xyz.x), lcLabF(xyz.y), lcLabF(xyz.z));
   float L = 116.0 * f.y - 16.0;
   float moved = L + 100.0 * (result.x + result.y + result.z * L * 0.01);
   if (floorAtZero) moved = max(moved, 0.0);
   f += (moved - L) / 116.0;
   vec3 back = vec3(lcLabFInv(f.x), lcLabFInv(f.y), lcLabFInv(f.z));
-  return ${L(ue(I))} * (back * vec3(${P(z)}, 1.0, ${P(B)}));
+  return ${R(le(L))} * (back * vec3(${F(B)}, 1.0, ${F(V)}));
 }
-`, pe = "\nif (llDraws > 0 || blDraws > 0) {\n  if (stageResult != vec3(0.0)) c.rgb = lcShiftLightness(c.rgb, stageResult, blDraws > 0);\n}\n", H = `${V}
+`, fe = "\nif (llDraws > 0 || blDraws > 0) {\n  if (stageResult != vec3(0.0)) c.rgb = lcShiftLightness(c.rgb, stageResult, blDraws > 0);\n}\n", U = "\nprecision highp int;\n", W = `${H}
 // 2^e for a normal result; ldexp is GLSL ES 3.10.
 float lcPow2(int e) { return uintBitsToFloat(uint(e + 127) << 23); }
 ivec2 lcFrame() { return ivec2(floor(1.0 / uTexel + 0.5)); }
@@ -370,28 +370,28 @@ vec4 lcResult(float delta, float slope, float v) {
   float hi = lcQuantize(at0);
   return vec4(hi, lcHalf(at0 - hi), z, 1.0);
 }
-`, U = `
+`, G = `
 float lcQuantize(float v) {
-  if (abs(v) < ${P(2 ** -14)}) return 0.0;
+  if (abs(v) < ${F(2 ** -14)}) return 0.0;
   return uintBitsToFloat((floatBitsToUint(v) + 0x1000u) & 0xFFFFE000u);
 }
 float lcHalf(float v) {
-  if (abs(v) < ${P(2 ** -14)}) return floor(v * ${P(2 ** 24)} + 0.5) * ${P(2 ** -24)};
+  if (abs(v) < ${F(2 ** -14)}) return floor(v * ${F(2 ** 24)} + 0.5) * ${F(2 ** -24)};
   return lcQuantize(v);
 }
 vec4 lcHalf4(vec4 v) { return vec4(lcHalf(v.x), lcHalf(v.y), lcHalf(v.z), lcHalf(v.w)); }
-`, W = (e) => `vec4(${[
+`, K = (e) => `vec4(${[
 	0,
 	1,
 	2,
 	3
-].map((t) => P(e + t < 6 ? i(e + t) : 0)).join(", ")})`, G = {
+].map((t) => F(e + t < 6 ? i(e + t) : 0)).join(", ")})`, q = {
 	idle: 0,
 	build: 1,
 	assemble: 2,
 	final: 3,
 	zero: 4
-}, me = `${U}${H}
+}, pe = `${U}${G}${W}
 // min(max_levels, 31 - clz(min(w, h))): findMSB is GLSL ES 3.10.
 int lcLevelCount(ivec2 frame) {
   int shortest = min(frame.x, frame.y);
@@ -432,7 +432,7 @@ vec4 lcTexel(int width, ivec2 t, int plane, ivec2 lo, ivec2 hi, highp int base) 
 // can't hold the atlas, or a draw count too small, runs nothing and its last
 // draw leaves 0.
 void lcSchedule(ivec2 frame, out int kind, out int l) {
-  kind = ${G.idle};
+  kind = ${q.idle};
   l = 0;
   int last = lcLevelCount(frame) - 1;
   bool runs = last >= 1;
@@ -443,19 +443,19 @@ void lcSchedule(ivec2 frame, out int kind, out int l) {
     runs = base + 2 * lcArea(lo, hi) <= frame.x * frame.y && uPassCount >= 2 * last;
   }
   if (!runs) {
-    if (uPassIndex == uPassCount - 1) kind = ${G.zero};
+    if (uPassIndex == uPassCount - 1) kind = ${q.zero};
     return;
   }
   int k = uPassIndex - (uPassCount - 2 * last);
   if (k < 0) return;
   if (k < last) {
-    kind = ${G.build};
+    kind = ${q.build};
     l = k + 1;
   } else if (k < 2 * last - 1) {
-    kind = ${G.assemble};
+    kind = ${q.assemble};
     l = last - 1 - (k - last);
   } else {
-    kind = ${G.final};
+    kind = ${q.final};
   }
 }
 // What a draw writes, with what the draw before it wrote: building level l
@@ -465,12 +465,12 @@ ivec4 lcRegion() {
   ivec2 frame = lcFrame();
   int kind, l;
   lcSchedule(frame, kind, l);
-  if (kind == ${G.idle}) return ivec4(0);
-  if (kind != ${G.build} && kind != ${G.assemble}) return ivec4(0, 0, frame);
+  if (kind == ${q.idle}) return ivec4(0);
+  if (kind != ${q.build} && kind != ${q.assemble}) return ivec4(0, 0, frame);
   ivec2 size, lo, hi;
   highp int base;
   lcLevel(frame, l, size, lo, hi, base);
-  if (kind == ${G.build}) {
+  if (kind == ${q.build}) {
     highp int to = base + 2 * lcArea(lo, hi);
     if (l > 1) lcLevel(frame, l - 1, size, lo, hi, base);
     return lcRows(frame.x, base, to);
@@ -501,8 +501,8 @@ vec4 lcRemapEach(vec4 x, vec4 g) {
 }
 vec4 lcRemap(float x, vec4 g) { return lcRemapEach(vec4(x), g); }
 // The reference levels a plane keeps: 0 to 2 in plane A, 3 to 5 in plane B.
-vec4 lcPlaneGammas(int plane) { return plane == 0 ? ${W(0)} : ${W(3)}; }
-float lcGamma(int k) { return dot(${W(0)}, lcOneHot(k)) + dot(${W(4)}, lcOneHot(k - 4)); }
+vec4 lcPlaneGammas(int plane) { return plane == 0 ? ${K(0)} : ${K(3)}; }
+float lcGamma(int k) { return dot(${K(0)}, lcOneHot(k)) + dot(${K(4)}, lcOneHot(k - 4)); }
 // A level's input padded by replication: L* / 100 of the frame's edge texel.
 float lcInputAt(ivec2 frame, ivec2 padded, int supp) {
   return lcLightness(fetchInput(clamp(padded - supp, ivec2(0), frame - 1))) * 0.01;
@@ -626,7 +626,7 @@ vec4 lcAssemble(ivec2 frame, int l, highp int rel, vec4 own) {
   return vec4(lcHalf(lcAssembled(x, lcPick(a, own, bLo) + r.x, lcPick(a, own, bHi) + r.y, w)), own.yzw);
 }
 // D at level 0, and its slope in v with the pair of curves held, taken across
-// ${P(2 * F)} of v.
+// ${F(2 * I)} of v.
 vec4 lcFinal(ivec2 frame, ivec2 q) {
   int last = lcLevelCount(frame) - 1;
   int supp = 1 << last;
@@ -637,39 +637,39 @@ vec4 lcFinal(ivec2 frame, ivec2 q) {
   float gLo = lcGamma(bLo);
   float gHi = lcGamma(bHi);
   vec3 x = lcExpand(frame, q + supp, frame + 2 * supp, 1, last == 1, bLo, bHi);
-  vec4 r = lcRemapEach(vec4(v, v, v + ${P(F)}, v - ${P(F)}), vec4(gLo, gHi, gLo, gLo));
-  vec4 r2 = lcRemapEach(vec4(v + ${P(F)}, v - ${P(F)}, 0.0, 0.0), vec4(gHi, gHi, 0.0, 0.0));
-  float up = clamp((v + ${P(F)} - gLo) / (gHi - gLo), 0.0, 1.0);
-  float down = clamp((v - ${P(F)} - gLo) / (gHi - gLo), 0.0, 1.0);
-  float slope = (lcAssembled(x, r.z, r2.x, up) - lcAssembled(x, r.w, r2.y, down)) / ${P(2 * F)};
+  vec4 r = lcRemapEach(vec4(v, v, v + ${F(I)}, v - ${F(I)}), vec4(gLo, gHi, gLo, gLo));
+  vec4 r2 = lcRemapEach(vec4(v + ${F(I)}, v - ${F(I)}, 0.0, 0.0), vec4(gHi, gHi, 0.0, 0.0));
+  float up = clamp((v + ${F(I)} - gLo) / (gHi - gLo), 0.0, 1.0);
+  float down = clamp((v - ${F(I)} - gLo) / (gHi - gLo), 0.0, 1.0);
+  float slope = (lcAssembled(x, r.z, r2.x, up) - lcAssembled(x, r.w, r2.y, down)) / ${F(2 * I)};
   return lcResult(lcAssembled(x, r.x, r.y, w), slope, v);
 }
-`, K = {
+`, J = {
 	build: "c = lcBuild(frame, l, n - base);",
 	assemble: "c = lcAssemble(frame, l, n - base - area, c);",
 	final: "c = lcFinal(frame, q);"
-}, he = `
+}, me = `
 ivec2 frame = lcFrame();
 ivec2 q = ivec2(gl_FragCoord.xy);
 int kind, l;
 lcSchedule(frame, kind, l);
-if (kind == ${G.zero}) {
+if (kind == ${q.zero}) {
   c = vec4(0.0, 0.0, 0.0, 1.0);
-} else if (kind == ${G.final}) {
-  ${K.final}
-} else if (kind != ${G.idle}) {
+} else if (kind == ${q.final}) {
+  ${J.final}
+} else if (kind != ${q.idle}) {
   ivec2 size, lo, hi;
   highp int base;
   lcLevel(frame, l, size, lo, hi, base);
   highp int area = lcArea(lo, hi);
   highp int n = q.y * frame.x + q.x;
-  if (kind == ${G.build}) {
-    if (n >= base && n < base + 2 * area) ${K.build}
+  if (kind == ${q.build}) {
+    if (n >= base && n < base + 2 * area) ${J.build}
   } else if (n >= base + area && n < base + 2 * area) {
-    ${K.assemble}
+    ${J.assemble}
   }
 }
-`, q = "return lcRegion();", J = {
+`, Y = "return lcRegion();", X = {
 	idle: 0,
 	plan: 1,
 	splatX: 2,
@@ -678,7 +678,7 @@ if (kind == ${G.zero}) {
 	blurY: 5,
 	slice: 6,
 	zero: 7
-}, ge = `${U}${H}
+}, he = `${U}${G}${W}
 // a / b correctly rounded, for positive normal floats: a GPU's division
 // needn't be, and the grid's sizes come out of these at whole numbers.
 float lcDiv(float a, float b) {
@@ -751,7 +751,7 @@ vec4 lcPlan(ivec2 frame) {
   for (int k = 0; k < 16; k++) {
     vec4 sigmas = lcGridSigmas(frame, s, contrast);
     if (lcGridTexels(frame, lcGridSize(frame, sigmas)) <= frame.x * frame.y) return sigmas;
-    s *= ${P(o)};
+    s *= ${F(o)};
   }
   return vec4(0.0);
 }
@@ -767,17 +767,17 @@ int lcSteps(ivec3 size, float sigmaS) { return ((size.z + 3) / 4) * (2 * lcChunk
 // slice. darktable blurs the whole splat along x, then y: the same sums, as
 // both are linear and act on one axis each.
 void lcStep(int k, ivec2 frame, vec4 sigmas, out int kind, out int quad, out int chunk) {
-  kind = ${J.idle};
+  kind = ${X.idle};
   quad = 0;
   chunk = 0;
   if (k == 0) {
-    kind = ${J.plan};
+    kind = ${X.plan};
     return;
   }
   ivec3 size = lcGridSize(frame, sigmas);
   int steps = lcSteps(size, sigmas.x);
   if (sigmas.x == 0.0 || uPassCount < steps + 1) {
-    if (k == uPassCount - 1) kind = ${J.zero};
+    if (k == uPassCount - 1) kind = ${X.zero};
     return;
   }
   int s = k - (uPassCount - steps);
@@ -788,10 +788,10 @@ void lcStep(int k, ivec2 frame, vec4 sigmas, out int kind, out int quad, out int
   if (s < splats) {
     quad = s / perQuad;
     int j = s - quad * perQuad;
-    kind = j < chunks ? ${J.splatX} : (j == chunks ? ${J.blurX} : ${J.splatY});
+    kind = j < chunks ? ${X.splatX} : (j == chunks ? ${X.blurX} : ${X.splatY});
     chunk = j < chunks ? j : j - chunks - 1;
   } else {
-    kind = s == splats ? ${J.blurY} : ${J.slice};
+    kind = s == splats ? ${X.blurY} : ${X.slice};
   }
 }
 // The texels [from, to) a step writes.
@@ -801,16 +801,16 @@ void lcStepRange(int kind, int quad, ivec2 frame, ivec3 size, out highp int from
   highp int grid = sx + size.x * frame.y;
   from = 0;
   to = 0;
-  if (kind == ${J.plan}) to = 4;
-  if (kind == ${J.splatX} || kind == ${J.blurX}) {
+  if (kind == ${X.plan}) to = 4;
+  if (kind == ${X.splatX} || kind == ${X.blurX}) {
     from = sx;
     to = grid;
   }
-  if (kind == ${J.splatY}) {
+  if (kind == ${X.splatY}) {
     from = grid + quad * nodes;
     to = from + nodes;
   }
-  if (kind == ${J.blurY}) {
+  if (kind == ${X.blurY}) {
     from = grid;
     to = grid + nodes * ((size.z + 3) / 4);
   }
@@ -821,8 +821,8 @@ ivec4 lcRegion() {
   vec4 sigmas = lcConstants();
   int kind, quad, chunk;
   lcStep(uPassIndex, frame, sigmas, kind, quad, chunk);
-  if (kind == ${J.idle}) return ivec4(0);
-  if (kind == ${J.slice} || kind == ${J.zero}) return ivec4(0, 0, frame);
+  if (kind == ${X.idle}) return ivec4(0);
+  if (kind == ${X.slice} || kind == ${X.zero}) return ivec4(0, 0, frame);
   ivec3 size = lcGridSize(frame, sigmas);
   highp int from, to, before, after;
   lcStepRange(kind, quad, frame, size, from, to);
@@ -944,49 +944,49 @@ vec4 lcSlice(ivec2 frame, vec4 sigmas, ivec3 size, ivec2 q) {
   float norm = -detail * sigmas.z * 0.04;
   return lcResult(norm * (100.0 / (sigmas.x * sigmas.x)) * sum * 0.01, 0.0, 0.0);
 }
-`, Y = {
+`, Z = {
 	plan: "c = lcPack(dot(lcPlan(frame), lcOneHot(q.x)));",
 	splatX: "c = lcHalf4((chunk == 0 ? vec4(0.0) : c) + lcSplatX(frame, sigmas, size, n - from, quad, chunk));",
 	splatY: "c = lcHalf4((chunk == 0 ? vec4(0.0) : c) + lcSplatY(frame, sigmas, size, n - from, chunk));",
 	blurX: "c = lcHalf4(lcBlur(frame, size, from, n - from, 0));",
 	blurY: "c = lcHalf4(lcBlur(frame, size, from, n - from, 1));",
 	slice: "c = lcSlice(frame, sigmas, size, q);"
-}, _e = `
+}, ge = `
 ivec2 frame = lcFrame();
 ivec2 q = ivec2(gl_FragCoord.xy);
 if (uPassIndex == 0) {
-  if (q.y == 0 && q.x < 4) ${Y.plan}
+  if (q.y == 0 && q.x < 4) ${Z.plan}
 } else {
   vec4 sigmas = lcConstants();
   int kind, quad, chunk;
   lcStep(uPassIndex, frame, sigmas, kind, quad, chunk);
   ivec3 size = lcGridSize(frame, sigmas);
-  if (kind == ${J.zero}) {
+  if (kind == ${X.zero}) {
     c = vec4(0.0, 0.0, 0.0, 1.0);
-  } else if (kind == ${J.slice}) {
-    ${Y.slice}
-  } else if (kind != ${J.idle}) {
+  } else if (kind == ${X.slice}) {
+    ${Z.slice}
+  } else if (kind != ${X.idle}) {
     highp int from, to;
     lcStepRange(kind, quad, frame, size, from, to);
     highp int n = q.y * frame.x + q.x;
     if (n >= from && n < to) {
-      if (kind == ${J.splatX}) {
-        ${Y.splatX}
-      } else if (kind == ${J.splatY}) {
-        ${Y.splatY}
-      } else if (kind == ${J.blurX}) {
-        ${Y.blurX}
+      if (kind == ${X.splatX}) {
+        ${Z.splatX}
+      } else if (kind == ${X.splatY}) {
+        ${Z.splatY}
+      } else if (kind == ${X.blurX}) {
+        ${Z.blurX}
       } else {
-        ${Y.blurY}
+        ${Z.blurY}
       }
     }
   }
 }
-`, ve = (e) => ee.includes(e), X = (n) => {
+`, _e = (e) => b.includes(e), Q = (n) => {
 	let r = {
 		key: n,
-		default: T(e, n),
-		label: x[n]
+		default: E(e, n),
+		label: S[n]
 	};
 	return n === "on" ? {
 		...r,
@@ -1002,12 +1002,12 @@ if (uPassIndex == 0) {
 	} : {
 		...r,
 		glslType: "float",
-		range: ve(n) ? { ...t[n] } : {
+		range: _e(n) ? { ...t[n] } : {
 			min: 0,
 			max: 1
 		}
 	};
-}, Z = (e) => ({
+}, ve = (e) => ({
 	key: e,
 	glslType: "int",
 	default: 0
@@ -1032,33 +1032,33 @@ function xe() {
 			encoding: "linear",
 			primaries: "rec709"
 		},
-		glsl: pe,
-		helpers: fe,
+		glsl: fe,
+		helpers: de,
 		uniforms: [
-			...y.map(X),
-			Z("llDraws"),
-			Z("blDraws")
+			...y.map(Q),
+			ve("llDraws"),
+			ve("blDraws")
 		],
 		passes: [{
 			channels: 4,
-			glsl: he,
-			helpers: me,
-			region: q,
+			glsl: me,
+			helpers: pe,
+			region: Y,
 			iterations: {
 				key: "llDraws",
 				max: h
 			},
-			uniforms: ye.map(X)
+			uniforms: ye.map(Q)
 		}, {
 			channels: 4,
-			glsl: _e,
-			helpers: ge,
-			region: q,
+			glsl: ge,
+			helpers: he,
+			region: Y,
 			iterations: {
 				key: "blDraws",
 				max: h
 			},
-			uniforms: be.map(X)
+			uniforms: be.map(Q)
 		}],
 		dormantWhen: {
 			llDraws: 0,
@@ -1069,41 +1069,41 @@ function xe() {
 }
 //#endregion
 //#region src/index.tsx
-var Q = `${_}.panel`, $ = null;
-function Se() {
-	let e = k.stores.useDevelopStore.getState();
-	e.setDynParams(ie()), e.commitEdit(`${A} reset`);
+var Se = `${_}.panel`, $ = null;
+function Ce() {
+	let e = A.stores.useDevelopStore.getState();
+	e.setDynParams(re()), e.commitEdit(`${j} reset`);
 }
-function Ce(e) {
-	ae(e), e.registerProcessingStage(xe()), e.registerPanel({
-		id: Q,
-		title: A,
-		component: N,
+function we(e) {
+	ie(e), e.registerProcessingStage(xe()), e.registerPanel({
+		id: Se,
+		title: j,
+		component: P,
 		defaultDock: {
 			module: "develop",
 			direction: "right",
 			width: 280
 		},
-		onReset: Se,
+		onReset: Ce,
 		mask: {
-			component: N,
-			owns: [...y, ...b].map(S)
+			component: P,
+			owns: [...y, ...x].map(C)
 		}
 	}), $?.(), $ = e.stores.useDevelopStore.subscribe((e, t) => {
 		if (e.params.masks !== t.params.masks) for (let n of e.params.masks) {
 			if (t.params.masks.some((e) => e.id === n.id && e.bag === n.bag)) continue;
-			let r = n.bag ? D(n.bag) : null;
+			let r = n.bag ? O(n.bag) : null;
 			r && e.updateMaskBag(n.id, r);
 		}
 		if (e.paramBag === t.paramBag) return;
-		let n = D(e.paramBag);
+		let n = O(e.paramBag);
 		n && e.setDynParams(n);
 	});
 }
-function we() {
+function Te() {
 	$?.(), $ = null;
 }
 //#endregion
-export { Q as PANEL_ID, Ce as activate, we as deactivate };
+export { Se as PANEL_ID, we as activate, Te as deactivate };
 
 //# sourceMappingURL=index.js.map

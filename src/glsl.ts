@@ -114,6 +114,13 @@ if (llDraws > 0 || blDraws > 0) {
 
 // ── Shared by both passes ────────────────────────────────────────────────────
 
+// The host's programs leave ints mediump, 16 bits on some GPUs, and the passes'
+// atlas indices and float bit casts need 32. The host's uniforms come first,
+// so they keep the precision the pass's two programs agree on.
+const PRECISION_GLSL = `
+precision highp int;
+`;
+
 const SHARED_GLSL = `${LIGHTNESS_GLSL}
 // 2^e for a normal result; ldexp is GLSL ES 3.10.
 float lcPow2(int e) { return uintBitsToFloat(uint(e + 127) << 23); }
@@ -165,7 +172,7 @@ const gammaVec = (from: number): string =>
 /** The step a draw of the local laplacian runs. */
 export const LL_STEP = { idle: 0, build: 1, assemble: 2, final: 3, zero: 4 } as const;
 
-export const LL_HELPERS = `${QUANTIZE_GLSL}${SHARED_GLSL}
+export const LL_HELPERS = `${PRECISION_GLSL}${QUANTIZE_GLSL}${SHARED_GLSL}
 // min(max_levels, 31 - clz(min(w, h))): findMSB is GLSL ES 3.10.
 int lcLevelCount(ivec2 frame) {
   int shortest = min(frame.x, frame.y);
@@ -456,7 +463,7 @@ export const REGION_GLSL = "return lcRegion();";
 
 export const BL_STEP = { idle: 0, plan: 1, splatX: 2, splatY: 3, blurX: 4, blurY: 5, slice: 6, zero: 7 } as const;
 
-export const BL_HELPERS = `${QUANTIZE_GLSL}${SHARED_GLSL}
+export const BL_HELPERS = `${PRECISION_GLSL}${QUANTIZE_GLSL}${SHARED_GLSL}
 // a / b correctly rounded, for positive normal floats: a GPU's division
 // needn't be, and the grid's sizes come out of these at whole numbers.
 float lcDiv(float a, float b) {

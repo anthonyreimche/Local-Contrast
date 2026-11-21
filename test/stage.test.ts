@@ -142,6 +142,18 @@ describe("a draw's cost", () => {
     }
   });
 
+  // The host declares only highp float, so a plain int is mediump: 16 bits on
+  // Mesa's radeonsi, where atlas indices past 32767 wrap and lcPow2's shift
+  // comes out 0. D3D11, desktop GL and SwiftShader ignore it. The pass helpers
+  // follow the host's uniforms in both programs, so the uniforms keep the
+  // precision both programs agree on.
+  it("computes every pass index in highp ints", () => {
+    for (const src of [LL_HELPERS, BL_HELPERS]) {
+      expect(code(src).trimStart()).toMatch(/^precision highp int;/);
+      expect(code(src)).not.toMatch(/\b(mediump|lowp)\b/);
+    }
+  });
+
   it("names no GLSL built-in, reserved word or uniform as a local", () => {
     const reserved = ["step", "smooth", "filter", "active", "input", "output", "sample", "half", "fixed", "common", "partition", "union", "long", "short"];
     const keys = [...EDIT_KEYS, ...DRAW_KEYS];
