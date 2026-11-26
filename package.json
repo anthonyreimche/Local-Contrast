@@ -1,7 +1,7 @@
 {
   "name": "safelight-local-contrast",
   "private": true,
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Local Contrast extension for Safelight: local laplacian and bilateral grid local contrast on L*.",
   "type": "module",
   "scripts": {

@@ -30,6 +30,7 @@ export function activate(host: Host): void {
     title: TITLE,
     component: LocalContrastPanel,
     defaultDock: { module: "develop", direction: "right", width: 280 },
+    modules: ["develop"],
     onReset: reset,
     mask: { component: LocalContrastPanel, owns: [...EDIT_KEYS, ...DRAW_KEYS].map(qualified) },
   });

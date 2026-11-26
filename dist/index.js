@@ -1084,6 +1084,7 @@ function we(e) {
 			direction: "right",
 			width: 280
 		},
+		modules: ["develop"],
 		onReset: Ce,
 		mask: {
 			component: P,
